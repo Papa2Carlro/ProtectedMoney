@@ -1,0 +1,13 @@
+PUT http://localhost:3000/api/script
+Content-Type: application/json
+
+{
+  "_id": 1619522277536,
+  "name": "New3",
+  "script": "main.js",
+  "lastDay": {
+    "day": 29,
+    "mount": 3,
+    "year": 2021
+  }
+}

@@ -1,0 +1,12 @@
+POST http://localhost:3000/api/script
+Content-Type: application/json
+
+{
+  "name": "New1",
+  "script": "link.js",
+  "lastDay": {
+    "day": 29,
+    "mount": 3,
+    "year": 2021
+  }
+}
