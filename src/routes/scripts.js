@@ -7,6 +7,7 @@ router.post('/', scriptController.createScript)
 router.put('/', scriptController.editScript)
 router.get('/admin/:name', scriptController.getScripts)
 router.get('/client/:name', scriptController.getScript)
+router.delete('/', scriptController.removeScript)
 
 // Export the Router
 module.exports = router

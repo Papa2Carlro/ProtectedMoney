@@ -1,21 +1,13 @@
-const moment = require('moment')
 const config = require('../../config/config')
+const moment = require('moment')
+const rename = require('../utils/editfile')
 
-const data = [
-  {
-    "_id": 1619520301028,
-    "name": "New1",
-    "script": "link",
-    "lastDay": {
-      "day": 29,
-      "mount": 4,
-      "year": 2021
-    }
-  },
+let data = [
   {
     "_id": 1619520301029,
     "name": "asicfox",
-    "script": "asicfox.js",
+    "script": "asicfox/asicfox.js",
+    "style": "asicfox/style.css",
     "lastDay": {
       "day": 27,
       "mount": 4,
@@ -26,6 +18,7 @@ const data = [
 
 exports.createScript = (req, res) => {
   const error = {}
+  const style = req.body.style
 
   const body = {
     _id: Date.now(),
@@ -33,6 +26,8 @@ exports.createScript = (req, res) => {
     script: req.body.script,
     lastDay: req.body.lastDay
   }
+
+  if (style) body.style = style
 
   try {
     if (data.filter(item => item.name === body.name).length !== 0) error.name = 'Такое имя уже существует'
@@ -52,6 +47,7 @@ exports.createScript = (req, res) => {
 
 exports.editScript = (req, res) => {
   const error = {}
+  const style = req.body.style
 
   const body = {
     _id: req.body._id,
@@ -72,13 +68,15 @@ exports.editScript = (req, res) => {
         item.name = body.name
         item.script = body.script
         item.lastDay = body.lastDay
+
+        if (style) item.style = style
       }
     })
 
     // Throw out the error
     if (Object.keys(error).length) throw error
 
-    return res.status(201).json({ok: true, msg: 'Field edit successful', data})
+    return res.status(201).json({ok: true, msg: 'Field edit successful'})
   } catch (err) {
     return res.json({ok: false, msg: err})
   }
@@ -110,9 +108,25 @@ exports.getScript = (req, res) => {
     const {day: endDay, mount: endMount, year: endYear} = result.lastDay
     const endDayBool = moment(`${endYear}-${endMount}-${endDay}`).isBefore(`${year}-${mount+1}-${day}`)
 
-    if (endDayBool) return res.json({ok: false, script: config.baseUrl + config.notPayScript})
+    if (endDayBool) rename(result.script, result.style)
 
-    return res.json({ok: false, script: config.baseUrl + result.script})
+    const response = {ok: true, script: config.baseUrl + result.script}
+    if (result.style) response.style = config.baseUrl + result.style
+
+    return res.json(response)
+  } catch (err) {
+    return res.json({ok: false, msg: err})
+  }
+}
+
+exports.removeScript = (req, res) => {
+  const _id = req.body._id
+  const dataLength = data.length
+
+  try {
+    data = data.filter(item => item._id !== _id)
+    if (dataLength === data.length) throw 'Not Found'
+    return res.status(201).json({ok: true, msg: 'Field delete successful'})
   } catch (err) {
     return res.json({ok: false, msg: err})
   }

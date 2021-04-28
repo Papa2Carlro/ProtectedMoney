@@ -1,8 +1,8 @@
 const express = require('express')
 const router = express.Router()
 
-const script = require('./script')
+const scripts = require('./scripts')
 
-router.use('/script', script)
+router.use('/script', scripts)
 
 module.exports = router
