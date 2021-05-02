@@ -2,8 +2,9 @@ POST http://localhost:3000/api/script
 Content-Type: application/json
 
 {
-  "name": "New1",
-  "script": "link.js",
+  "name": "asicfox",
+  "script": "acixfox/script.js",
+  "style": "acixfox/style.css",
   "lastDay": {
     "day": 29,
     "mount": 3,

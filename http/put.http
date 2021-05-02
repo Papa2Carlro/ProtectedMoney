@@ -3,8 +3,9 @@ Content-Type: application/json
 
 {
   "_id": 1619522277536,
-  "name": "New3",
-  "script": "main.js",
+  "name": "asicfox",
+  "script": "acixfox/script.js",
+  "style": "acixfox/style.css",
   "lastDay": {
     "day": 29,
     "mount": 3,

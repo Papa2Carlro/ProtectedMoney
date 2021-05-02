@@ -2,10 +2,12 @@ const config = require('../../config/config')
 const moment = require('moment')
 const rename = require('../utils/editfile')
 
+const services = require('../services/scripts.services')
+
 let data = [
   {
     "_id": 1619520301029,
-    "name": "asicfox",
+    "name": "asicfox1",
     "script": "asicfox/asicfox.js",
     "style": "asicfox/style.css",
     "lastDay": {
@@ -16,12 +18,11 @@ let data = [
   }
 ]
 
-exports.createScript = (req, res) => {
+exports.createScript = async (req, res) => {
   const error = {}
   const style = req.body.style
 
   const body = {
-    _id: Date.now(),
     name: req.body.name,
     script: req.body.script,
     lastDay: req.body.lastDay
@@ -38,7 +39,7 @@ exports.createScript = (req, res) => {
     // Throw out the error
     if (Object.keys(error).length) throw error
 
-    data.push(body)
+    await services.create(body)
     return res.status(201).json({ok: true, msg: 'Field created successful', data})
   } catch (err) {
     return res.json({ok: false, msg: err})
